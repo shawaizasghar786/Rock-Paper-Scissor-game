@@ -1,7 +1,7 @@
 import cv2
 from gesture_predictor import predict_gesture
 from ai_logic import SmartAI
-from utils import get_results
+from game_logic import get_result
 
 ai=SmartAI()
 cap=cv2.VideoCapture(0)

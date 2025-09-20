@@ -6,24 +6,25 @@ import cv2
 
 class GestureCNN(nn.Module):
     def __init__(self):
-        super(GestureCNN,self).__init__()
-        self.conv=nn.Sequential(
-        self.conv2D(3,32,3),nn.ReLU(),
-        nn.MaxPool2d(2),
-        self.conv2D(32,64,3),nn.ReLU(),
-        nn.MaxPool2d(2)
+        super(GestureCNN, self).__init__()
+        self.conv = nn.Sequential(
+            nn.Conv2d(3, 32, 3), nn.ReLU(),
+            nn.MaxPool2d(2),
+            nn.Conv2d(32, 64, 3), nn.ReLU(),
+            nn.MaxPool2d(2)
         )
-        self.fc=nn.Sequential(
+        self.fc = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(64*30*30,128),nn.ReLU(),
-            nn.Linear(128,3)
+            nn.Linear(64 * 30 * 30, 128), nn.ReLU(),
+            nn.Linear(128, 3)
         )
+
         def forward(self,x):
             x=self.conv(x)
             x=self.fc(x)
             return x
 model=GestureCNN()
-model.load_state_dict(torch.load('gesture_model.pth', map.location=torch.device('cpu')))
+model.load_state_dict(torch.load('gesture_model.pth', map_location=torch.device('cpu')))
 model.eval()
 
 labels=['rock','paper','scissors']
