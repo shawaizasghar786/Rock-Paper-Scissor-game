@@ -12,7 +12,7 @@ class SmartAI:
         self.last_move=None
 
     def update(self, player_move):
-        self.history.appent(player_move)
+        self.history.append(player_move)
         if self.last_move:
             self.transitions[self.last_move][player_move]+=1
             self.last_move=player_move

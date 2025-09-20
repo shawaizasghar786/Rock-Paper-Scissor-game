@@ -18,9 +18,9 @@ loader=DataLoader(dataset,batch_size=Batch_Size,shuffle=True)
 
 class GestureCNN(nn.Module):
     def __init__(self):
-        super(GestureCNN,self).__init__()
-        self.conv=nn.Sequential(
-            nn.Conv2d(3,32,3),nn.Relu()
+        super(GestureCNN, self).__init__()
+        self.conv = nn.Sequential(
+            nn.Conv2d(3, 32, 3), nn.ReLU(),
             nn.MaxPool2d(2),
             nn.Conv2d(32, 64, 3), nn.ReLU(),
             nn.MaxPool2d(2)
@@ -38,11 +38,11 @@ model = GestureCNN().to(Device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 # Training
-for epoch in range(EPOCHS):
+for epoch in range(Epochs):
     model.train()
     total_loss = 0
     for images, labels in loader:
-        images, labels = images.to(DEVICE), labels.to(DEVICE)
+        images, labels = images.to(Device), labels.to(Device)
         outputs = model(images)
         loss = criterion(outputs, labels)
 
@@ -51,9 +51,9 @@ for epoch in range(EPOCHS):
         optimizer.step()
         total_loss += loss.item()
 
-    print(f"Epoch {epoch+1}/{EPOCHS}, Loss: {total_loss:.4f}")
+    print(f"Epoch {epoch+1}/{Epochs}, Loss: {total_loss:.4f}")
 
 # Save model
 torch.save(model.state_dict(), 'gesture_model.pth')
-print("✅ Model saved as gesture_model.pth")
+
     

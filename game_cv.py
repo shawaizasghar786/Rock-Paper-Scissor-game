@@ -2,6 +2,7 @@ import cv2
 from gesture_predictor import predict_gesture
 from ai_logic import SmartAI
 from game_logic import get_result
+import time
 
 ai=SmartAI()
 cap=cv2.VideoCapture(0)
@@ -14,7 +15,13 @@ while True:
     gesture=predict_gesture(frame)
     if gesture in ['rock','paper','scissors']:
         ai.update(gesture)
-        ai_move=ai.predict
+        ai_move=ai.predict()
+        print(f"You: {gesture} | AI: {ai_move}")
+        print(f"Result: {get_result(gesture, ai_move)}")
+        print("-" * 40)
+        time.sleep(5)
+
+
         result=get_result(gesture,ai_move)
         cv2.putText(frame,f"You: {gesture} | AI: {ai_move} → {result}",
                   (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0,255,0), 2)

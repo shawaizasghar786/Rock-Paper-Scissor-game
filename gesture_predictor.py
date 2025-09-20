@@ -4,6 +4,9 @@ import torchvision.transforms as transforms
 import numpy as np
 import cv2
 
+import torch.nn as nn
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 class GestureCNN(nn.Module):
     def __init__(self):
         super(GestureCNN, self).__init__()
@@ -19,25 +22,26 @@ class GestureCNN(nn.Module):
             nn.Linear(128, 3)
         )
 
-        def forward(self,x):
-            x=self.conv(x)
-            x=self.fc(x)
-            return x
+    def forward(self, x):
+        x = self.conv(x)
+        x = self.fc(x)
+        return x
+
 model=GestureCNN()
 model.load_state_dict(torch.load('gesture_model.pth', map_location=torch.device('cpu')))
 model.eval()
 
 labels=['rock','paper','scissors']
 
-transform=transforms.Compose([
+transform = transforms.Compose([
     transforms.ToPILImage(),
-    transforms.Resize((128,128)),
+    transforms.Resize((128, 128)),
     transforms.ToTensor(),
-    transforms.Normalize([0.5]*3,[0.5]*3)
+    transforms.Normalize([0.5]*3, [0.5]*3)
 ])
 def predict_gesture(frame):
     img=transform(frame)
-    img=img.unsqueeze(0)
+    img= transform(frame).unsqueeze(0).to(device)
     with torch.no_grad():
         output=model(img)
         _,predicted=torch.max(output, 1)
