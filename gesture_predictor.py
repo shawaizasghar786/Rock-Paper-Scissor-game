@@ -44,5 +44,7 @@ def predict_gesture(frame):
     img= transform(frame).unsqueeze(0).to(device)
     with torch.no_grad():
         output=model(img)
+        print("Raw output:", output)
         _,predicted=torch.max(output, 1)
     return labels[predicted.item()]
+

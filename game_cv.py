@@ -16,11 +16,16 @@ while True:
     if not ret:
         break
 
-    # Draw ROI box for hand placement
-    cv2.rectangle(frame, (100, 100), (300, 300), (255, 0, 0), 2)
+    
+    frame = cv2.resize(frame, (320, 240))
     roi = frame[100:300, 100:300]  # Crop hand region
-
     gesture = predict_gesture(roi)
+        # Draw ROI box for hand placement
+    cv2.rectangle(frame, (100, 100), (300, 300), (255, 0, 0), 2)
+
+# Show predicted gesture on screen
+    cv2.putText(frame, f"Gesture: {gesture}", (10, 60),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
     if gesture in ['rock', 'paper', 'scissors']:
         ai.update(gesture)
         ai_move = ai.predict()
@@ -35,7 +40,7 @@ while True:
         cv2.putText(frame, f"You: {gesture} | AI: {ai_move} → {result}",
                     (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
-        time.sleep(1)  # Slight delay for readability
+        time.sleep(0.3)  # Slight delay for readability
 
     cv2.imshow('Rock Paper Scissors AI', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
