@@ -52,6 +52,19 @@ for epoch in range(Epochs):
         total_loss += loss.item()
 
     print(f"Epoch {epoch+1}/{Epochs}, Loss: {total_loss:.4f}")
+correct = 0
+total = 0
+with torch.no_grad():
+    for images, labels in loader:
+        images, labels = images.to(Device), labels.to(Device)
+        outputs = model(images)
+        _, predicted = torch.max(outputs.data, 1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+accuracy = 100 * correct / total
+print(f"Epoch {epoch+1}/{Epochs}, Loss: {total_loss:.4f}, Accuracy: {accuracy:.2f}%")
+
 
 # Save model
 torch.save(model.state_dict(), 'gesture_model.pth')
